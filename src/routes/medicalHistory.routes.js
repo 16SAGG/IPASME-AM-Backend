@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createMedicalHistory, deleteMedicalHistory, getMedicalHistories, getMedicalHistory, updateMedicalHistory } from "../controllers/medicalHistory.controllers";
+import { createMedicalHistory, deleteMedicalHistory, getMedicalHistories, getMedicalHistory, updateMedicalHistory } from "../controllers/medicalHistory.controllers.js";
 
 const router = Router()
 
