@@ -3,11 +3,11 @@ import { createMedicalHistory, deleteMedicalHistory, getMedicalHistories, getMed
 
 const router = Router()
 
-router.get('/medical_history', getMedicalHistories)
-router.get('/medical_history/:id', getMedicalHistory)
-router.post('/medical_history', createMedicalHistory)
-router.patch('/medical_history/:id', updateMedicalHistory )
-router.delete('/medical_history/:id', deleteMedicalHistory)
+router.get('/medical_histories', getMedicalHistories)
+router.get('/medical_histories/:id', getMedicalHistory)
+router.post('/medical_histories', createMedicalHistory)
+router.patch('/medical_histories/:id', updateMedicalHistory )
+router.delete('/medical_histories/:id', deleteMedicalHistory)
 
 
 export default router

@@ -3,11 +3,11 @@ import { createPatient, deletePatient, getPatient, getPatients, updatePatient } 
 
 const router = Router()
 
-router.get('/patient', getPatients)
-router.get('/patient/:id', getPatient)
-router.post('/patient', createPatient)
-router.patch('/patient/:id', updatePatient )
-router.delete('/patient/:id', deletePatient)
+router.get('/patients', getPatients)
+router.get('/patients/:id', getPatient)
+router.post('/patients', createPatient)
+router.patch('/patients/:id', updatePatient )
+router.delete('/patients/:id', deletePatient)
 
 
 export default router
