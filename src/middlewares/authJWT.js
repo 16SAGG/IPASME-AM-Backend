@@ -118,7 +118,7 @@ export const isReceptionistOrIsDoctorOwnerAppointment = async(req, res, next) =>
             message: 'Appointment Not Found.'
         })
 
-        const doctorIsOwner = appointmentRows[0].doctor === userRows.id
+        const doctorIsOwner = appointmentRows[0].doctor === userRows[0].id
 
         if (userIsReceptionist || (userIsDoctor && doctorIsOwner)) return next()
         
@@ -150,7 +150,7 @@ export const isReceptionistOrIsDoctorOwnerMedicalHistory = async(req, res, next)
             message: 'Medical History Not Found.'
         })
 
-        const doctorIsOwner = medicalHistoryRows[0].doctor === userRows.id
+        const doctorIsOwner = medicalHistoryRows[0].doctor === userRows[0].id
 
         if (userIsReceptionist || (userIsDoctor && doctorIsOwner)) return next()
         
