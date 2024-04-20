@@ -13,6 +13,27 @@ export const getMedicalHistories = async (req, res) =>{
     }
 }
 
+export const getMedicalHistoriesByPatient = async (req, res) =>{
+    try{
+        const {patient_id} = req.params
+
+        const [patientRows] = await pool.query('SELECT * FROM patient WHERE id = ?', [patient_id])
+
+        if (patientRows.length <= 0) return res.status(404).json({
+            message: 'Patient Not Found.'
+        })
+
+        const [medicalHistoryRows] = await pool.query('SELECT * FROM medical_history WHERE patient = ?', [patient_id])
+
+        res.json(medicalHistoryRows)
+    }
+    catch {
+        return res.status(500).json({
+            message : 'Something Goes Wrong'
+        })
+    }
+}
+
 export const getMedicalHistory = async (req, res) =>{
     try{
         const {id} = req.params
