@@ -59,7 +59,6 @@ export const updateAppointment = async (req, res) => {
     try{
         const {id} = req.params
         const {appointment_date, doctor, patient, appointment_type, was_executed} = req.body
-        console.log(appointment_date, doctor, patient, appointment_type, was_executed)
         const [rows] = await pool.query(
             'UPDATE appointment SET appointment_date = IFNULL(?, appointment_date), doctor = IFNULL(?, doctor), patient = IFNULL(?, patient), appointment_type = IFNULL(?, appointment_type), was_executed = IFNULL(?, was_executed) WHERE id = ?',
             [appointment_date, doctor, patient, appointment_type, was_executed, id]
