@@ -1,7 +1,4 @@
 import { pool } from "../db.js";
-import bcrypt from "bcryptjs";
-import jwt from 'jsonwebtoken';
-import { ENV } from "../config.js";
 
 export const getUsers = async (req, res) =>{
     try{
@@ -31,44 +28,6 @@ export const getUser = async (req, res) =>{
         return res.status(500).json({
             message : 'Something Goes Wrong'
         }) 
-    }
-}
-
-export const createUser = async (req, res) =>{
-    try{
-        const {name, last_name, ci, email, password, user_type, specialty, turn, birthdate, gender} = req.body
-        const encryptPassword = async (password) =>{
-            const salt = await bcrypt.genSalt(10)
-            return await bcrypt.hash(password, salt)
-        }
-        const encryptedPassword = await encryptPassword(password)
-
-        const [rows] = await pool.query(
-            'INSERT INTO user (name, last_name, ci, email, password, user_type, specialty, turn, birthdate, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            [name, last_name, ci, email, encryptedPassword, user_type, specialty, turn, birthdate, gender]
-        )
-
-        const token = jwt.sign({id: email}, ENV.SECRET_TOKEN_KEY, {expiresIn: 86400})
-
-        res.send({
-            id: rows.insertId,
-            name,
-            last_name,
-            ci,
-            email,
-            encryptedPassword,
-            user_type,
-            specialty,
-            turn,
-            birthdate,
-            gender,
-            token
-        })
-    }
-    catch {
-        return res.status(500).json({
-            message : 'Something Goes Wrong'
-        })
     }
 }
 
