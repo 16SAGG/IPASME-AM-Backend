@@ -63,7 +63,7 @@ export const updatePatient = async (req, res) => {
         const {name, last_name, ci, email, phone, birthdate, address, gender} = req.body
         const [rows] = await pool.query(
             'UPDATE patient SET name = IFNULL(?, name), last_name = IFNULL(?, last_name), ci = IFNULL(?, ci), email = IFNULL(?, email), phone = IFNULL(?, phone), birthdate = IFNULL(?, birthdate), address = IFNULL(?, address), gender = IFNULL(?, gender) WHERE id = ?',
-            [name, last_name, ci, email, phone, birthdate, address, gender]
+            [name, last_name, ci, email, phone, birthdate, address, gender, id]
         )
 
         if (rows.affectedRows <= 0) return res.status(404).json({
