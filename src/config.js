@@ -9,4 +9,5 @@ export const ENV = {
     DB_USER : process.env.DB_USER || 'root',
     DB_PASSWORD : process.env.DB_PASSWORD || 'S#amu3425',
     DB_DATABASE : process.env.DB_DATABASE || 'ipasmedb',
+    SECRET_TOKEN_KEY : process.env.SECRET_TOKEN_KEY || 'ipasmedb'
 }
