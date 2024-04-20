@@ -42,6 +42,7 @@ export const isAdmin = async (req, res, next) => {
         })
 
         const userIsAdmin = rows[0].user_type === '0'
+        console.log(rows[0].user_type, typeof rows[0].user_type)
         if (!userIsAdmin) return res.status(403).json({
             message: "It's Required To Be An Administrator"
         })
