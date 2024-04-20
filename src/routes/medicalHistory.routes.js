@@ -5,7 +5,7 @@ import {verifyToken, isReceptionistOrIsDoctor, isReceptionistOrIsDoctorOwnerMedi
 const router = Router()
 
 router.get('/medical_histories', [verifyToken], getMedicalHistories)
-router.get('/medical_histories/:patient_id', [verifyToken], getMedicalHistoriesByPatient)
+router.get('/medical_histories/patient/:patient_id', [verifyToken], getMedicalHistoriesByPatient)
 router.get('/medical_histories/:id', [verifyToken], getMedicalHistory)
 router.post('/medical_histories', [verifyToken, isReceptionistOrIsDoctor], createMedicalHistory)
 router.patch('/medical_histories/:id', [verifyToken, isReceptionistOrIsDoctorOwnerMedicalHistory], updateMedicalHistory )
