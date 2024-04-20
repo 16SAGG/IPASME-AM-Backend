@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { createMedicalHistory, deleteMedicalHistory, getMedicalHistories, getMedicalHistory, updateMedicalHistory } from "../controllers/medicalHistory.controllers.js";
-import {verifyToken, isReceptionist, isReceptionistOrIsDoctor, isReceptionistOrIsDoctorOwnerMedicalHistory} from "../middlewares/index.js"
+import {verifyToken, isReceptionistOrIsDoctor, isReceptionistOrIsDoctorOwnerMedicalHistory} from "../middlewares/index.js"
 
 const router = Router()
 

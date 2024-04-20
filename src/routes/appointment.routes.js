@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { createAppointment, deleteAppointment, getAppointment, getAppointments, updateAppointment } from "../controllers/appointment.controllers.js";
-import {isReceptionist, isReceptionistOrIsDoctorOwner, isReceptionistOrIsDoctorOwnerAppointment, verifyToken} from "../middlewares/index.js"
+import {isReceptionist, isReceptionistOrIsDoctorOwnerAppointment, verifyToken} from "../middlewares/index.js"
 
 const router = Router()
 
