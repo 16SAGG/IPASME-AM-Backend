@@ -1,11 +1,11 @@
 import { Router } from "express";
 import { createAppointment, deleteAppointment, getAppointment, getAppointments, getAppointmentsByDoctor, updateAppointment } from "../controllers/appointment.controllers.js";
-import {isReceptionist, isReceptionistOrIsDoctorOwnerAppointment, verifyToken} from "../middlewares/index.js"
+import {isReceptionist, isReceptionistOrIsDoctor, isReceptionistOrIsDoctorOwnerAppointment, verifyToken} from "../middlewares/index.js"
 
 const router = Router()
 
 router.get('/appointments', [verifyToken, isReceptionist], getAppointments)
-router.get('/appointments/doctor/:doctor_id', [verifyToken, isReceptionist], getAppointmentsByDoctor)
+router.get('/appointments/doctor/:doctor_id', [verifyToken, isReceptionistOrIsDoctor], getAppointmentsByDoctor)
 router.get('/appointments/:id', [verifyToken, isReceptionistOrIsDoctorOwnerAppointment], getAppointment)
 router.post('/appointments', [verifyToken, isReceptionist], createAppointment)
 router.patch('/appointments/:id', [verifyToken, isReceptionist], updateAppointment )

@@ -89,7 +89,7 @@ export const isReceptionistOrIsDoctor = async(req, res, next) =>{
         const userIsDoctor = rows[0].user_type === 1
         
         if (userIsReceptionist || userIsDoctor) return next()
-        
+
         return res.status(403).json({
             message: "It's Required To Be An Receptionist OR Be An Doctor"
         })
