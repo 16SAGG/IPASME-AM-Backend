@@ -13,6 +13,26 @@ export const getAppointments= async (req, res) =>{
     }
 }
 
+export const getAppointmentsByDoctor = async (req, res) =>{
+    try{
+        const {doctor_id} = req.params
+        const [doctorRows] = await pool.query('SELECT * FROM user WHERE id = ? AND user_type = 1', [doctor_id])
+        
+        if (doctorRows.length <= 0) return res.status(404).json({
+            message: 'Doctor Not Found.'
+        })
+        
+        const [appointmentRows] = await pool.query('SELECT * FROM appointment WHERE doctor = ?', [doctor_id])
+    
+        res.json(appointmentRows)
+    }
+    catch {
+        return res.status(500).json({
+            message : 'Something Goes Wrong'
+        })
+    }
+}
+
 export const getAppointment = async (req, res) =>{
     try{
         const {id} = req.params
@@ -30,6 +50,9 @@ export const getAppointment = async (req, res) =>{
         }) 
     }
 }
+
+
+
 
 export const createAppointment= async (req, res) =>{
     try{
