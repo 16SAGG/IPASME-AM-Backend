@@ -25,6 +25,7 @@ export const signIn = async (req, res) =>{
         const token = jwt.sign({id: email}, ENV.SECRET_TOKEN_KEY, {expiresIn: 86400})
 
         res.json({
+            id : rows[0].id,
             token
         })
     }
