@@ -1,4 +1,5 @@
 import express from 'express'
+import cors from 'cors'
 
 import userRoutes from './routes/users.routes.js'
 import medicalHistoryRoutes from './routes/medicalHistory.routes.js'
@@ -11,6 +12,9 @@ import { notFound } from './controllers/404.controllers.js'
 const app = express()
 
 app.use(express.json())
+app.use(cors({
+    origin: ['http://localhost:3000']
+}))
 
 app.use('/api', userRoutes)
 app.use('/api', patientRoutes)
