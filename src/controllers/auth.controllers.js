@@ -26,6 +26,15 @@ export const signIn = async (req, res) =>{
 
         res.json({
             id : rows[0].id,
+            name: rows[0].name,
+            last_name: rows[0].last_name,
+            ci: rows[0].ci,
+            email: rows[0].email,
+            user_type: rows[0].user_type,
+            specialty: rows[0].specialty,
+            turn: rows[0].turn,
+            birthdate: rows[0].birthdate,
+            gender: rows[0].gender,
             token
         })
     }
