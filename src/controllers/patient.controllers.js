@@ -36,7 +36,7 @@ export const getNumberOfPatientsSeenBySpecialtyOnADate = async (req, res) =>{
         const {id_specialty, month, year} = req.params
         
         const [rows] = await pool.query(
-            'SELECT * FROM medical_history WHERE specialty = ? AND MONTH(mh_date) = ? AND YEAR(mh_date) = ?',
+            'SELECT COUNT(*) FROM medical_history WHERE specialty = ? AND MONTH(mh_date) = ? AND YEAR(mh_date) = ?',
             [id_specialty, month, year]
         )
     
