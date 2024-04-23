@@ -31,6 +31,24 @@ export const getPatient = async (req, res) =>{
     }
 }
 
+export const getNumberOfPatientsSeenBySpecialtyOnADate = async (req, res) =>{
+    try{
+        const {id_specialty, month, year} = req.params
+        
+        const [rows] = await pool.query(
+            'SELECT * FROM medical_history WHERE specialty = ? AND MONTH(mh_date) = ? AND YEAR(mh_date) = ?',
+            [id_specialty, month, year]
+        )
+    
+        res.json(rows)
+    }
+    catch{
+        return res.status(500).json({
+            message : 'Something Goes Wrong'
+        })
+    }
+}
+
 export const createPatient = async (req, res) =>{
     try{
         const {name, last_name, ci, email, phone, birthdate, address, gender} = req.body
