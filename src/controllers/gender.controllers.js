@@ -1,3 +1,5 @@
+import { pool } from "../db.js";
+
 export const getGenders = async (req, res) =>{
     try{
         const [rows] = await pool.query('SELECT * FROM gender')

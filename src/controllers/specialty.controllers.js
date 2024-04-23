@@ -1,3 +1,5 @@
+import { pool } from "../db.js";
+
 export const getSpecialties = async (req, res) =>{
     try{
         const [rows] = await pool.query('SELECT * FROM specialty')
