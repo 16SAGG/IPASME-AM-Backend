@@ -36,7 +36,7 @@ export const getPatientsSeenBySpecialtyOnADate = async (req, res) =>{
         const {id_specialty, month, year} = req.params
         
         const [rows] = await pool.query(
-            'SELECT * FROM medical_history AS mh JOIN patient AS p ON mh.patient = p.id WHERE specialty = ? AND MONTH(mh_date) = ? AND YEAR(mh_date) = ?',
+            'SELECT p.id, p.birthdate, p.gender FROM medical_history AS mh JOIN patient AS p ON mh.patient = p.id WHERE specialty = ? AND MONTH(mh_date) = ? AND YEAR(mh_date) = ?',
             [id_specialty, month, year]
         )
     
