@@ -31,12 +31,12 @@ export const getPatient = async (req, res) =>{
     }
 }
 
-export const getNumberOfPatientsSeenBySpecialtyOnADate = async (req, res) =>{
+export const getPatientsSeenBySpecialtyOnADate = async (req, res) =>{
     try{
         const {id_specialty, month, year} = req.params
         
         const [rows] = await pool.query(
-            'SELECT COUNT(*) FROM medical_history WHERE specialty = ? AND MONTH(mh_date) = ? AND YEAR(mh_date) = ?',
+            'SELECT * FROM medical_history WHERE specialty = ? AND MONTH(mh_date) = ? AND YEAR(mh_date) = ?',
             [id_specialty, month, year]
         )
     
