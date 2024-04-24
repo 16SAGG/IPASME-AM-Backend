@@ -93,7 +93,7 @@ export const updateAppointment = async (req, res) => {
 
         const [updatedRows] = await pool.query('SELECT * FROM appointment WHERE id = ?', [id])
 
-        res.send(updatedRows)
+        res.send(updatedRows[0])
     }
     catch {
         return res.status(500).json({

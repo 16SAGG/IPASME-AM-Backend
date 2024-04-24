@@ -90,7 +90,7 @@ export const updatePatient = async (req, res) => {
 
         const [updatedRows] = await pool.query('SELECT * FROM patient WHERE id = ?', [id])
 
-        res.send(updatedRows)
+        res.send(updatedRows[0])
     }
     catch {
         return res.status(500).json({
