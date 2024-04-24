@@ -49,10 +49,10 @@ export const getDoctors = async (req, res) =>{
 export const updateUser = async (req, res) => {
     try{
         const {id} = req.params
-        const {name, last_name, ci, email, user_type, specialty, turn, birthdate, gender} = req.body
+        const {name, last_name, user_type, specialty, turn, birthdate, gender} = req.body
         const [rows] = await pool.query(
-            'UPDATE user SET name = IFNULL(?, name), last_name = IFNULL(?, last_name), ci = IFNULL(?, ci), email = IFNULL(?, email), password = IFNULL(?, password), user_type = IFNULL(?, user_type), specialty = IFNULL(?, specialty), turn = IFNULL(?, turn), birthdate = IFNULL(?, birthdate), gender = IFNULL(?, gender) WHERE id = ?',
-            [name, last_name, ci, email, user_type, specialty, turn, birthdate, gender, id]
+            'UPDATE user SET name = IFNULL(?, name), last_name = IFNULL(?, last_name), user_type = IFNULL(?, user_type), specialty = IFNULL(?, specialty), turn = IFNULL(?, turn), birthdate = IFNULL(?, birthdate), gender = IFNULL(?, gender) WHERE id = ?',
+            [name, last_name, user_type, specialty, turn, birthdate, gender, id]
         )
 
         if (rows.affectedRows <= 0) return res.status(404).json({
