@@ -69,7 +69,7 @@ export const createMedicalHistory = async (req, res) =>{
     try{
         const {mh_date, doctor, patient, description, specialty} = req.body
         const [rows] = await pool.query(
-            'INSERT INTO medical_history (mh_date, doctor, patient, description, specialty) VALUES (?, ?, ?, ?)',
+            'INSERT INTO medical_history (mh_date, doctor, patient, description, specialty) VALUES (?, ?, ?, ?, ?)',
             [mh_date, doctor, patient, description, specialty]
         )
         res.send({
