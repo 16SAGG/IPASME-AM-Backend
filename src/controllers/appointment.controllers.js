@@ -13,6 +13,19 @@ export const getAppointments= async (req, res) =>{
     }
 }
 
+export const getAppointmentsWithDoctorCIAndPatientCI = async (req, res) =>{
+    try{
+        const [rows] = await pool.query('SELECT a.id, a.appointment_date, u.ci, p.ci FROM appointment AS a JOIN patient AS p ON a.patient = p.id JOIN user AS u ON a.doctor = u.id')
+    
+        res.json(rows)
+    }
+    catch {
+        return res.status(500).json({
+            message : 'Something Goes Wrong'
+        })
+    }
+}
+
 export const getAppointmentsByDoctor = async (req, res) =>{
     try{
         const {doctor_id} = req.params
