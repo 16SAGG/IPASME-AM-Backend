@@ -70,10 +70,10 @@ export const getAppointment = async (req, res) =>{
 export const createAppointment= async (req, res) =>{
     try{
         console.log(req.body)
-        const {appointment_date, doctor, patient, appointment_type, was_executed} = req.body
+        const {appointment_date, doctor, patient, appointment_type, specialty, turn} = req.body
         const [rows] = await pool.query(
-            'INSERT INTO appointment (appointment_date, doctor, patient, appointment_type, was_executed) VALUES (?, ?, ?, ?, ?)',
-            [appointment_date, doctor, patient, appointment_type, was_executed]
+            'INSERT INTO appointment (appointment_date, doctor, patient, appointment_type, specialty, turn) VALUES (?, ?, ?, ?, ?)',
+            [appointment_date, doctor, patient, appointment_type, specialty, turn]
         )
         res.send({
             id: rows.insertId,
@@ -81,7 +81,8 @@ export const createAppointment= async (req, res) =>{
             doctor, 
             patient, 
             appointment_type, 
-            was_executed
+            specialty,
+            turn
         })
     }
     catch {
@@ -94,10 +95,10 @@ export const createAppointment= async (req, res) =>{
 export const updateAppointment = async (req, res) => {
     try{
         const {id} = req.params
-        const {appointment_date, doctor, patient, appointment_type, was_executed} = req.body
+        const {appointment_date, doctor, patient, appointment_type, specialty, turn} = req.body
         const [rows] = await pool.query(
-            'UPDATE appointment SET appointment_date = IFNULL(?, appointment_date), doctor = IFNULL(?, doctor), patient = IFNULL(?, patient), appointment_type = IFNULL(?, appointment_type), was_executed = IFNULL(?, was_executed) WHERE id = ?',
-            [appointment_date, doctor, patient, appointment_type, was_executed, id]
+            'UPDATE appointment SET appointment_date = IFNULL(?, appointment_date), doctor = IFNULL(?, doctor), patient = IFNULL(?, patient), appointment_type = IFNULL(?, appointment_type), specialty = IFNULL(?, specialty), turn = IFNULL(?, turn) WHERE id = ?',
+            [appointment_date, doctor, patient, appointment_type, specialty, turn, id]
         )
 
         if (rows.affectedRows <= 0) return res.status(404).json({

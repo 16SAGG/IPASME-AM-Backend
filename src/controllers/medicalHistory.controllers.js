@@ -15,7 +15,12 @@ export const getMedicalHistories = async (req, res) =>{
 
 export const getMedicalHistoriesWithPatientCIAndSpecialty = async (req, res) =>{
     try{
-        const [rows] = await pool.query('SELECT mh.id, mh.mh_date, p.ci, s.name FROM medical_history AS mh JOIN patient AS p ON p.id = mh.patient JOIN specialty AS s ON mh.specialty = s.id')
+        const [rows] = await pool.query(`SELECT 
+        mh.id, a.appointment_date, p.ci, s.name 
+        FROM medical_history AS mh 
+        JOIN appointment AS a ON mh.appointment = a.id
+        JOIN patient AS p ON a.patient = p.id
+        JOIN specialty AS s ON a.specialty = s.id`)
     
         res.json(rows)
     }
@@ -36,7 +41,7 @@ export const getMedicalHistoriesByPatient = async (req, res) =>{
             message: 'Patient Not Found.'
         })
 
-        const [medicalHistoryRows] = await pool.query('SELECT * FROM medical_history WHERE patient = ?', [patient_id])
+        const [medicalHistoryRows] = await pool.query('SELECT * FROM medical_history AS mh JOIN appointment AS a ON mh.appointment = a.id WHERE patient = ?', [patient_id])
 
         res.json(medicalHistoryRows)
     }
@@ -67,18 +72,15 @@ export const getMedicalHistory = async (req, res) =>{
 
 export const createMedicalHistory = async (req, res) =>{
     try{
-        const {mh_date, doctor, patient, description, specialty} = req.body
+        const {appointment, description} = req.body
         const [rows] = await pool.query(
-            'INSERT INTO medical_history (mh_date, doctor, patient, description, specialty) VALUES (?, ?, ?, ?, ?)',
-            [mh_date, doctor, patient, description, specialty]
+            'INSERT INTO medical_history (appointment, description) VALUES ( ?, ?)',
+            [appointment, description]
         )
         res.send({
             id: rows.insertId,
-            mh_date, 
-            doctor, 
-            patient, 
-            description,
-            specialty
+            appointment,  
+            description
         })
     }
     catch {
@@ -91,10 +93,10 @@ export const createMedicalHistory = async (req, res) =>{
 export const updateMedicalHistory= async (req, res) => {
     try{
         const {id} = req.params
-        const {mh_date, doctor, patient, description, specialty} = req.body
+        const {appointment, description} = req.body
         const [rows] = await pool.query(
-            'UPDATE medical_history SET mh_date = IFNULL(?, mh_date), doctor = IFNULL(?, doctor), patient = IFNULL(?, patient), description = IFNULL(?, description), specialty = IFNULL(?, specialty) WHERE id = ?',
-            [mh_date, doctor, patient, description, specialty, id]
+            'UPDATE medical_history SET appointment = IFNULL(?, appointment), description = IFNULL(?, description) WHERE id = ?',
+            [appointment, description, id]
         )
 
         if (rows.affectedRows <= 0) return res.status(404).json({
