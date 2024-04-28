@@ -72,7 +72,7 @@ export const createAppointment= async (req, res) =>{
         console.log(req.body)
         const {appointment_date, doctor, patient, appointment_type, specialty, turn} = req.body
         const [rows] = await pool.query(
-            'INSERT INTO appointment (appointment_date, doctor, patient, appointment_type, specialty, turn) VALUES (?, ?, ?, ?, ?)',
+            'INSERT INTO appointment (appointment_date, doctor, patient, appointment_type, specialty, turn) VALUES (?, ?, ?, ?, ?, ?)',
             [appointment_date, doctor, patient, appointment_type, specialty, turn]
         )
         res.send({
