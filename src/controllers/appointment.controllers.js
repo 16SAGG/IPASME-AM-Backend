@@ -26,6 +26,25 @@ export const getAppointmentsWithDoctorCIAndPatientCI = async (req, res) =>{
     }
 }
 
+export const getAppointmentsNotIncludesInAMedicalHistory = async (req, res) =>{
+    try{
+        const [rows] = await pool.query(`SELECT a.id
+        FROM appointment AS a
+        WHERE NOT EXISTS (
+            SELECT *
+            FROM medical_history AS mh
+            WHERE mh.appointment = a.id
+        )`)
+    
+        res.json(rows)
+    }
+    catch {
+        return res.status(500).json({
+            message : 'Something Goes Wrong'
+        })
+    }
+}
+
 export const getAppointmentsByDoctor = async (req, res) =>{
     try{
         const {doctor_id} = req.params
