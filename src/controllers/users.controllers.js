@@ -45,6 +45,20 @@ export const getDoctors = async (req, res) =>{
     }
 }
 
+export const getDoctorsBySpecialtyAndTurn = async (req, res) =>{
+    try{
+        const {specialty, turn} = req.params
+        const [rows] = await pool.query('SELECT * FROM user WHERE user_type = 1 AND specialty = ? AND turn = ?', [specialty, turn])
+
+        res.json(rows)
+    }
+    catch {
+        return res.status(500).json({
+            message : 'Something Goes Wrong'
+        }) 
+    }
+}
+
 
 export const updateUser = async (req, res) => {
     try{
