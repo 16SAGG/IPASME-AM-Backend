@@ -26,6 +26,21 @@ export const getAppointmentsWithDoctorAndPatient = async (req, res) =>{
     }
 }
 
+export const getAppointmentsWithDoctorAndPatientByID = async (req, res) =>{
+    try{
+        const {id} = req.params
+        const [rows] = await pool.query('SELECT a.id, a.appointment_date, a.specialty, a.turn, u.ci AS doctor_id, u.name AS doctor_name, u.last_name AS doctor_last, p.ci AS patient_id, p.name AS patient_name, p.last_name AS patient_last FROM appointment AS a JOIN patient AS p ON a.patient = p.id JOIN user AS u ON a.doctor = u.id WHERE a.id = ?',
+        [id])
+    
+        res.json(rows)
+    }
+    catch {
+        return res.status(500).json({
+            message : 'Something Goes Wrong'
+        })
+    }
+}
+
 export const getAppointmentsNotIncludesInAMedicalHistory = async (req, res) =>{
     try{
         const [rows] = await pool.query(`SELECT a.id
