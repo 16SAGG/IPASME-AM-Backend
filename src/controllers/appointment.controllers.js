@@ -68,10 +68,6 @@ export const getAppointmentsByDoctor = async (req, res) =>{
         if (doctorRows.length <= 0) return res.status(404).json({
             message: 'Doctor Not Found.'
         })
-
-        console.log("dia: ", new Date().getDay())
-        console.log("mes: ", new Date().getMonth())
-        console.log("ano: ", new Date().getFullYear())
         
         const [appointmentRows] = await pool.query(`
         SELECT a.id, a.appointment_date, a.specialty, a.turn, u.ci AS doctor_id, u.name AS doctor_name, u.last_name AS doctor_last, p.ci AS patient_id, p.name AS patient_name, p.last_name AS patient_last 
@@ -84,9 +80,6 @@ export const getAppointmentsByDoctor = async (req, res) =>{
             FROM medical_history AS mh
             WHERE mh.appointment = a.id
         )
-        AND DAY(a.appointment_date) >= ${new Date().getDay()}
-        AND MONTH(a.appointment_date) >= ${new Date().getMonth()}
-        AND YEAR(a.appointment_date) >= ${new Date().getFullYear()}
         `, 
         [doctor_id])
     
