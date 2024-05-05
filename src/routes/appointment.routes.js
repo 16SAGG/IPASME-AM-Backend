@@ -6,7 +6,7 @@ const router = Router()
 
 router.get('/appointments', [verifyToken, isReceptionist], getAppointments)
 router.get('/appointments/doctor/patient', [verifyToken, isReceptionist], getAppointmentsWithDoctorAndPatient)
-router.get('/appointments/doctor/patient/:id', [verifyToken, isReceptionist], getAppointmentsWithDoctorAndPatientByID)
+router.get('/appointments/doctor/patient/:id', [verifyToken], getAppointmentsWithDoctorAndPatientByID)
 router.get('/appointments/whitout/medical_histories', [verifyToken], getAppointmentsNotIncludesInAMedicalHistory)
 router.get('/appointments/doctor/:doctor_id', [verifyToken, isReceptionistOrIsDoctor], getAppointmentsByDoctor)
 router.get('/appointments/:id', [verifyToken, isReceptionistOrIsDoctorOwnerAppointment], getAppointment)
