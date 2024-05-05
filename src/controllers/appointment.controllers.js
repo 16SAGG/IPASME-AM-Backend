@@ -69,6 +69,13 @@ export const getAppointmentsByDoctor = async (req, res) =>{
             message: 'Doctor Not Found.'
         })
         
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+        const month = currentDate.getMonth() + 1;
+        const day = fechaActual.getDate();
+        
+        const dateFormat = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`
+
         const [appointmentRows] = await pool.query(`
         SELECT a.id, a.appointment_date, a.specialty, a.turn, u.ci AS doctor_id, u.name AS doctor_name, u.last_name AS doctor_last, p.ci AS patient_id, p.name AS patient_name, p.last_name AS patient_last 
         FROM appointment AS a 
@@ -80,6 +87,7 @@ export const getAppointmentsByDoctor = async (req, res) =>{
             FROM medical_history AS mh
             WHERE mh.appointment = a.id
         )
+        AND a.appointment_date >= ${dateFormat}
         `, 
         [doctor_id])
     
