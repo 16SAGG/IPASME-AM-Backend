@@ -87,9 +87,9 @@ export const getAppointmentsByDoctor = async (req, res) =>{
             FROM medical_history AS mh
             WHERE mh.appointment = a.id
         )
-        AND a.appointment_date >= ${dateFormat}
+        AND a.appointment_date >= ?
         `, 
-        [doctor_id])
+        [doctor_id, dateFormat])
     
         res.json(appointmentRows)
     }
