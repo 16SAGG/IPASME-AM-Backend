@@ -41,7 +41,13 @@ export const getMedicalHistoriesByPatient = async (req, res) =>{
             message: 'Patient Not Found.'
         })
 
-        const [medicalHistoryRows] = await pool.query('SELECT * FROM medical_history AS mh JOIN appointment AS a ON mh.appointment = a.id WHERE patient = ?', [patient_id])
+        const [medicalHistoryRows] = await pool.query(
+            `SELECT * FROM medical_history AS mh 
+            JOIN appointment AS a ON mh.appointment = a.id 
+            JOIN user AS u ON a.doctor = u.id
+            JOIN specialty AS s ON a.specialty = s.id
+            WHERE patient = ?`
+            , [patient_id])
 
         res.json(medicalHistoryRows)
     }
