@@ -83,6 +83,7 @@ export const getAppointmentsByDoctor = async (req, res) =>{
             WHERE mh.appointment = a.id
         )
         AND a.appointment_date >= ?
+        ORDER BY a.appointment_date ASC
         `, 
         [doctor_id, dateFormat])
     
