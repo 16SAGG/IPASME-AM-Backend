@@ -12,8 +12,6 @@ import specialtyRoutes from './routes/specialty.routes.js'
 import turnRoutes from './routes/turn.routes.js'
 import userTypeRoutes from './routes/userType.routes.js'
 
-
-
 import { notFound } from './controllers/404.controllers.js'
 
 const app = express()
