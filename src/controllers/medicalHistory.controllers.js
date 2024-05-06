@@ -42,7 +42,7 @@ export const getMedicalHistoriesByPatient = async (req, res) =>{
         })
 
         const [medicalHistoryRows] = await pool.query(
-            `SELECT * FROM medical_history AS mh 
+            `SELECT a.appointment_date, a.description, u.name, u.last_name, u.ci, s.name FROM medical_history AS mh 
             JOIN appointment AS a ON mh.appointment = a.id 
             JOIN user AS u ON a.doctor = u.id
             JOIN specialty AS s ON a.specialty = s.id
