@@ -15,12 +15,7 @@ export const getMedicalHistories = async (req, res) =>{
 
 export const getMedicalHistoriesWithPatientCIAndSpecialty = async (req, res) =>{
     try{
-        const [rows] = await pool.query(`SELECT 
-        mh.id, a.appointment_date, p.ci, s.name 
-        FROM medical_history AS mh 
-        JOIN appointment AS a ON mh.appointment = a.id
-        JOIN patient AS p ON a.patient = p.id
-        JOIN specialty AS s ON a.specialty = s.id`)
+        const [rows] = await pool.query(`SELECT * from user_type`)
     
         res.json(rows)
     }

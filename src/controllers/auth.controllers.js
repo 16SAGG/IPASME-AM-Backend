@@ -6,6 +6,7 @@ import { ENV } from "../config.js";
 export const signIn = async (req, res) =>{
     try{
         const {email, password} = req.body
+        
         const [rows] = await pool.query('SELECT * FROM user WHERE email = ?', [email])
 
         if (rows.length <= 0) return res.status(404).json({
@@ -27,10 +28,10 @@ export const signIn = async (req, res) =>{
         res.json({
             id : rows[0].id,
             name: rows[0].name,
-            last_name: rows[0].last_name,
+            last_name: rows[0].lastName,
             ci: rows[0].ci,
             email: rows[0].email,
-            user_type: rows[0].user_type,
+            user_type: rows[0].userType,
             specialty: rows[0].specialty,
             turn: rows[0].turn,
             birthdate: rows[0].birthdate,
