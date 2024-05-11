@@ -119,10 +119,9 @@ export const getAppointment = async (req, res) =>{
 
 export const createAppointment= async (req, res) =>{
     try{
-        console.log(req.body)
         const {date, doctor, patient, appointmentType, specialty, turn} = req.body
         const [rows] = await pool.query(
-            'INSERT INTO appointment (date, doctor, patient, appointmentType, specialty, turn) VALUES (?, ?, ?, ?, ?, ?)',
+            'INSERT INTO appointment (date, doctor, patient, type, specialty, turn) VALUES (?, ?, ?, ?, ?, ?)',
             [date, doctor, patient, appointmentType, specialty, turn]
         )
         res.send({
@@ -147,7 +146,7 @@ export const updateAppointment = async (req, res) => {
         const {id} = req.params
         const {date, doctor, patient, appointmentType, specialty, turn} = req.body
         const [rows] = await pool.query(
-            'UPDATE appointment SET date = IFNULL(?, date), doctor = IFNULL(?, doctor), patient = IFNULL(?, patient), appointmentType = IFNULL(?, appointmentType), specialty = IFNULL(?, specialty), turn = IFNULL(?, turn) WHERE id = ?',
+            'UPDATE appointment SET date = IFNULL(?, date), doctor = IFNULL(?, doctor), patient = IFNULL(?, patient), type = IFNULL(?, type), specialty = IFNULL(?, specialty), turn = IFNULL(?, turn) WHERE id = ?',
             [date, doctor, patient, appointmentType, specialty, turn, id]
         )
 
