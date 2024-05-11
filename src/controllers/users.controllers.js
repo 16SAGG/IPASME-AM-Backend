@@ -34,7 +34,7 @@ export const getUser = async (req, res) =>{
 export const getDoctors = async (req, res) =>{
     try{
         const {id} = req.params
-        const [rows] = await pool.query('SELECT * FROM user WHERE user_type = 1', [id])
+        const [rows] = await pool.query('SELECT * FROM user WHERE userType = 1', [id])
 
         res.json(rows)
     }
@@ -48,7 +48,7 @@ export const getDoctors = async (req, res) =>{
 export const getDoctorsBySpecialtyAndTurn = async (req, res) =>{
     try{
         const {specialty, turn} = req.params
-        const [rows] = await pool.query('SELECT * FROM user WHERE user_type = 1 AND specialty = ? AND turn = ?', [specialty, turn])
+        const [rows] = await pool.query('SELECT * FROM user WHERE userType = 1 AND specialty = ? AND turn = ?', [specialty, turn])
 
         res.json(rows)
     }
@@ -63,10 +63,10 @@ export const getDoctorsBySpecialtyAndTurn = async (req, res) =>{
 export const updateUser = async (req, res) => {
     try{
         const {id} = req.params
-        const {name, last_name, user_type, specialty, turn, birthdate, gender} = req.body
+        const {name, lastName, userType, specialty, turn, birthdate, gender} = req.body
         const [rows] = await pool.query(
-            'UPDATE user SET name = IFNULL(?, name), last_name = IFNULL(?, last_name), user_type = IFNULL(?, user_type), specialty = IFNULL(?, specialty), turn = IFNULL(?, turn), birthdate = IFNULL(?, birthdate), gender = IFNULL(?, gender) WHERE id = ?',
-            [name, last_name, user_type, specialty, turn, birthdate, gender, id]
+            'UPDATE user SET name = IFNULL(?, name), lastName = IFNULL(?, lastName), userType = IFNULL(?, userType), specialty = IFNULL(?, specialty), turn = IFNULL(?, turn), birthdate = IFNULL(?, birthdate), gender = IFNULL(?, gender) WHERE id = ?',
+            [name, lastName, userType, specialty, turn, birthdate, gender, id]
         )
 
         if (rows.affectedRows <= 0) return res.status(404).json({

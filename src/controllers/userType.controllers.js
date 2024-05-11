@@ -2,7 +2,7 @@ import { pool } from "../db.js";
 
 export const getUserTypes = async (req, res) =>{
     try{
-        const [rows] = await pool.query('SELECT * FROM user_type')
+        const [rows] = await pool.query('SELECT * FROM userType')
     
         res.json(rows)
     }
