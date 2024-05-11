@@ -41,7 +41,7 @@ export const getPatientsSeenBySpecialtyOnADate = async (req, res) =>{
             JOIN patient AS p ON a.patient = p.id 
             WHERE a.specialty = ? AND MONTH(a.date) = ? AND YEAR(a.date) = ?`,
             [id_specialty, month, year]
-        )//
+        )
     
         res.json(rows)
     }
