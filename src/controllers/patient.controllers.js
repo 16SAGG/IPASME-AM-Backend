@@ -54,15 +54,15 @@ export const getPatientsSeenBySpecialtyOnADate = async (req, res) =>{
 
 export const createPatient = async (req, res) =>{
     try{
-        const {name, last_name, ci, email, phone, birthdate, address, gender} = req.body
+        const {name, lastName, ci, email, phone, birthdate, address, gender} = req.body
         const [rows] = await pool.query(
-            'INSERT INTO patient (name, last_name, ci, email, phone, birthdate, address, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-            [name, last_name, ci, email, phone, birthdate, address, gender]
+            'INSERT INTO patient (name, lastName, ci, email, phone, birthdate, address, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+            [name, lastName, ci, email, phone, birthdate, address, gender]
         )
         res.send({
             id: rows.insertId,
             name, 
-            last_name, 
+            lastName, 
             ci, 
             email, 
             phone, 
@@ -81,10 +81,10 @@ export const createPatient = async (req, res) =>{
 export const updatePatient = async (req, res) => {
     try{
         const {id} = req.params
-        const {name, last_name, ci, email, phone, birthdate, address, gender} = req.body
+        const {name, lastName, ci, email, phone, birthdate, address, gender} = req.body
         const [rows] = await pool.query(
-            'UPDATE patient SET name = IFNULL(?, name), last_name = IFNULL(?, last_name), ci = IFNULL(?, ci), email = IFNULL(?, email), phone = IFNULL(?, phone), birthdate = IFNULL(?, birthdate), address = IFNULL(?, address), gender = IFNULL(?, gender) WHERE id = ?',
-            [name, last_name, ci, email, phone, birthdate, address, gender, id]
+            'UPDATE patient SET name = IFNULL(?, name), lastName = IFNULL(?, lastName), ci = IFNULL(?, ci), email = IFNULL(?, email), phone = IFNULL(?, phone), birthdate = IFNULL(?, birthdate), address = IFNULL(?, address), gender = IFNULL(?, gender) WHERE id = ?',
+            [name, lastName, ci, email, phone, birthdate, address, gender, id]
         )
 
         if (rows.affectedRows <= 0) return res.status(404).json({
