@@ -48,7 +48,7 @@ export const signIn = async (req, res) =>{
 
 export const signUp = async (req, res) =>{
     try{
-        const {name, last_name, ci, email, password, user_type, specialty, turn, birthdate, gender} = req.body
+        const {name, lastName, ci, email, password, userType, specialty, turn, birthdate, gender} = req.body
         const encryptPassword = async (password) =>{
             const salt = await bcrypt.genSalt(10)
             return await bcrypt.hash(password, salt)
@@ -56,8 +56,8 @@ export const signUp = async (req, res) =>{
         const encryptedPassword = await encryptPassword(password)
 
         const [rows] = await pool.query(
-            'INSERT INTO user (name, last_name, ci, email, password, user_type, specialty, turn, birthdate, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-            [name, last_name, ci, email, encryptedPassword, user_type, specialty, turn, birthdate, gender]
+            'INSERT INTO user (name, lastName, ci, email, password, userType, specialty, turn, birthdate, gender) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+            [name, lastName, ci, email, encryptedPassword, userType, specialty, turn, birthdate, gender]
         )
 
         const token = jwt.sign({id: email}, ENV.SECRET_TOKEN_KEY, {expiresIn: 86400})
@@ -65,11 +65,11 @@ export const signUp = async (req, res) =>{
         res.send({
             id: rows.insertId,
             name,
-            last_name,
+            lastName,
             ci,
             email,
             encryptedPassword,
-            user_type,
+            userType,
             specialty,
             turn,
             birthdate,
