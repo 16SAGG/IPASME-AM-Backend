@@ -41,7 +41,7 @@ export const isAdmin = async (req, res, next) => {
             message: 'User Not Found.'
         })
 
-        const userIsAdmin = rows[0].user_type === 0
+        const userIsAdmin = rows[0].userType === 0
         if (!userIsAdmin) return res.status(403).json({
             message: "It's Required To Be An Administrator"
         })
@@ -63,7 +63,7 @@ export const isReceptionist = async(req, res, next) =>{
             message: 'User Not Found.'
         })
 
-        const userIsReceptionist = rows[0].user_type === 2
+        const userIsReceptionist = rows[0].userType === 2
         if (!userIsReceptionist) return res.status(403).json({
             message: "It's Required To Be An Receptionist"
         })
@@ -85,8 +85,8 @@ export const isReceptionistOrIsDoctor = async(req, res, next) =>{
             message: 'User Not Found.'
         })
 
-        const userIsReceptionist = rows[0].user_type === 2
-        const userIsDoctor = rows[0].user_type === 1
+        const userIsReceptionist = rows[0].userType === 2
+        const userIsDoctor = rows[0].userType === 1
         
         if (userIsReceptionist || userIsDoctor) return next()
 
@@ -109,8 +109,8 @@ export const isReceptionistOrIsDoctorOwnerAppointment = async(req, res, next) =>
             message: 'User Not Found.'
         })
 
-        const userIsReceptionist = userRows[0].user_type === 2
-        const userIsDoctor = userRows[0].user_type === 1
+        const userIsReceptionist = userRows[0].userType === 2
+        const userIsDoctor = userRows[0].userType === 1
         
         const [appointmentRows] = await pool.query('SELECT * FROM appointment WHERE id = ?', [req.params.id])
 
@@ -141,8 +141,8 @@ export const isReceptionistOrIsDoctorOwnerMedicalHistory = async(req, res, next)
             message: 'User Not Found.'
         })
 
-        const userIsReceptionist = userRows[0].user_type === 2
-        const userIsDoctor = userRows[0].user_type === 1
+        const userIsReceptionist = userRows[0].userType === 2
+        const userIsDoctor = userRows[0].userType === 1
         
         const [medicalHistoryRows] = await pool.query('SELECT * FROM medical_history WHERE id = ?', [req.params.id])
 
