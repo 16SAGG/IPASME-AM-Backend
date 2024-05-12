@@ -62,8 +62,8 @@ export const getAppointmentsNotIncludesInAMedicalHistory = async (req, res) =>{
 
 export const getAppointmentsByDoctor = async (req, res) =>{
     try{
-        const {doctorId, year, month, day} = req.params
-        const [doctorRows] = await pool.query('SELECT * FROM user WHERE id = ? AND userType = 1', [doctorId])
+        const {doctor_id, year, month, day} = req.params
+        const [doctorRows] = await pool.query('SELECT * FROM user WHERE id = ? AND userType = 1', [doctor_id])
         
         if (doctorRows.length <= 0) return res.status(404).json({
             message: 'Doctor Not Found.'
@@ -85,7 +85,7 @@ export const getAppointmentsByDoctor = async (req, res) =>{
         AND a.date >= ?
         ORDER BY a.date ASC
         `, 
-        [doctorId, dateFormat])
+        [doctor_id, dateFormat])
     
         res.json(appointmentRows)
     }
