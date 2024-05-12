@@ -144,7 +144,7 @@ export const isReceptionistOrIsDoctorOwnerMedicalHistory = async(req, res, next)
         const userIsReceptionist = userRows[0].userType === 2
         const userIsDoctor = userRows[0].userType === 1
         
-        const [medicalHistoryRows] = await pool.query('SELECT * FROM medical_history WHERE id = ?', [req.params.id])
+        const [medicalHistoryRows] = await pool.query('SELECT * FROM medicalHistory WHERE id = ?', [req.params.id])
 
         if (medicalHistoryRows.length <= 0) return res.status(404).json({
             message: 'Medical History Not Found.'

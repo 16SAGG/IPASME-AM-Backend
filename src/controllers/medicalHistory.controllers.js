@@ -2,7 +2,7 @@ import { pool } from "../db.js";
 
 export const getMedicalHistories = async (req, res) =>{
     try{
-        const [rows] = await pool.query('SELECT * FROM medical_history')
+        const [rows] = await pool.query('SELECT * FROM medicalHistory')
     
         res.json(rows)
     }
@@ -42,7 +42,7 @@ export const getMedicalHistoriesByPatient = async (req, res) =>{
         })
 
         const [medicalHistoryRows] = await pool.query(
-            `SELECT a.appointment_date, mh.description, u.name AS doctor_name, u.last_name, u.ci, s.name AS specialty_name FROM medical_history AS mh 
+            `SELECT a.appointment_date, mh.description, u.name AS doctor_name, u.last_name, u.ci, s.name AS specialty_name FROM medicalHistory AS mh 
             JOIN appointment AS a ON mh.appointment = a.id 
             JOIN user AS u ON a.doctor = u.id
             JOIN specialty AS s ON a.specialty = s.id
@@ -61,7 +61,7 @@ export const getMedicalHistoriesByPatient = async (req, res) =>{
 export const getMedicalHistory = async (req, res) =>{
     try{
         const {id} = req.params
-        const [rows] = await pool.query('SELECT * FROM medical_history WHERE id = ?', [id])
+        const [rows] = await pool.query('SELECT * FROM medicalHistory WHERE id = ?', [id])
 
         if (rows.length <= 0) return res.status(404).json({
             message: 'Medical History Not Found.'
@@ -80,7 +80,7 @@ export const createMedicalHistory = async (req, res) =>{
     try{
         const {appointment, description} = req.body
         const [rows] = await pool.query(
-            'INSERT INTO medical_history (appointment, description) VALUES ( ?, ?)',
+            'INSERT INTO medicalHistory (appointment, description) VALUES ( ?, ?)',
             [appointment, description]
         )
         res.send({
@@ -101,7 +101,7 @@ export const updateMedicalHistory= async (req, res) => {
         const {id} = req.params
         const {description} = req.body
         const [rows] = await pool.query(
-            'UPDATE medical_history SET description = IFNULL(?, description) WHERE id = ?',
+            'UPDATE medicalHistory SET description = IFNULL(?, description) WHERE id = ?',
             [description, id]
         )
 
@@ -109,7 +109,7 @@ export const updateMedicalHistory= async (req, res) => {
             message: 'Medical History Not Found.'
         })
 
-        const [updatedRows] = await pool.query('SELECT * FROM medical_history WHERE id = ?', [id])
+        const [updatedRows] = await pool.query('SELECT * FROM medicalHistory WHERE id = ?', [id])
 
         res.send(updatedRows[0])
     }
@@ -123,7 +123,7 @@ export const updateMedicalHistory= async (req, res) => {
 export const deleteMedicalHistory = async (req, res) =>{
     try{
         const {id} = req.params
-        const [rows] = await pool.query('DELETE FROM medical_history WHERE id = ?', [id])
+        const [rows] = await pool.query('DELETE FROM medicalHistory WHERE id = ?', [id])
 
         if (rows.affectedRows <= 0) return res.status(404).json({
             message: 'Medical History Not Found.'
