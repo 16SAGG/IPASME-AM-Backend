@@ -23,7 +23,7 @@ export const getMedicalHistoriesWithPatientCIAndSpecialty = async (req, res) =>{
         JOIN specialty AS s ON a.specialty = s.id
         JOIN turn AS t ON a.turn = t.id
         `)
-    
+        //
         res.json(rows)
     }
     catch {
