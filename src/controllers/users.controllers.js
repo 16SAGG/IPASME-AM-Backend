@@ -47,8 +47,14 @@ export const getDoctors = async (req, res) =>{
 
 export const getDoctorsBySpecialtyAndTurn = async (req, res) =>{
     try{
-        const {specialty, turn} = req.params
-        const [rows] = await pool.query('SELECT * FROM user WHERE userType = 1 AND specialty = ? AND turn = ?', [specialty, turn])
+        const {specialty, turn, year, month, day} = req.params
+        
+        const dateFormat = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`
+
+        const [rows] = await pool.query(`
+        SELECT * FROM user AS u
+        WHERE userType = 1 AND specialty = ? AND turn = ? AND (SELECT COUNT(*) FROM appointment AS a WHERE a.doctor = u.id AND a.date = ?) <= 12;
+        `, [specialty, turn, dateFormat])
 
         res.json(rows)
     }

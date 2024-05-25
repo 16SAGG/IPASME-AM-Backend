@@ -6,7 +6,7 @@ const router = Router()
 
 router.get('/users', [verifyToken, isAdmin], getUsers)
 router.get('/users/doctors', verifyToken, getDoctors)
-router.get('/users/doctors/:specialty/:turn', verifyToken, getDoctorsBySpecialtyAndTurn)
+router.get('/users/doctors/:specialty/:turn/:year/:month/:day', verifyToken, getDoctorsBySpecialtyAndTurn)
 router.get('/users/:id', [verifyToken, isAdmin], getUser)
 router.patch('/users/:id', [verifyToken, isAdmin], updateUser )
 router.delete('/users/:id', [verifyToken, isAdmin], deleteUser)
