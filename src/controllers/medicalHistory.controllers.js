@@ -230,12 +230,142 @@ export const exportReportToExcel = async(req, res) =>{
 
         const [specialtiesRows] = await pool.query('SELECT * FROM specialty')
 
-        specialtiesRows.map((specialty, index) =>{
-            const specialtyRow = sheet.cell(`A${index + 3}`)
-            specialtyRow.value(specialty.name)
+        const specialtiesResults = specialtiesRows.map(async(specialty, index) =>{
+            let JAN_MAR = {
+                man: 0,
+                woman: 0,
+                children: 0,
+                adults: 0,
+                oldmans: 0,
+            }
+            let APR_JUN = {
+                man: 0,
+                woman: 0,
+                children: 0,
+                adults: 0,
+                oldmans: 0,
+            }
+            let JUL_SEP = {
+                man: 0,
+                woman: 0,
+                children: 0,
+                adults: 0,
+                oldmans: 0,
+            }
+            let OCT_DEC = {
+                man: 0,
+                woman: 0,
+                children: 0,
+                adults: 0,
+                oldmans: 0,
+            }
+            
+            const [rowsJAN_MAR] = await pool.query(
+                `SELECT p.id, p.birthdate, p.gender FROM medicalHistory AS mh 
+                JOIN appointment AS a ON mh.appointment = a.id
+                JOIN patient AS p ON a.patient = p.id 
+                WHERE a.specialty = ? AND MONTH(a.date) BETWEEN ? AND ? AND YEAR(a.date) = ?`,
+                [specialty.id, 1, 3, year]
+            )
+            await rowsJAN_MAR.map((result) =>{
+                const age = year - new Date(result.birthdate).getFullYear()
+                JAN_MAR.man += (result.gender === 0) ? 1 : 0
+                JAN_MAR.woman += (result.gender !== 0) ? 1 : 0
+                JAN_MAR.children += (age < 18) ? 1 : 0
+                JAN_MAR.adults += (age >= 18 && age < 65) ? 1 : 0
+                JAN_MAR.oldmans += (age >= 65) ? 1 : 0
+            })
+
+            const [rowsAPR_JUN] = await pool.query(
+                `SELECT p.id, p.birthdate, p.gender FROM medicalHistory AS mh 
+                JOIN appointment AS a ON mh.appointment = a.id
+                JOIN patient AS p ON a.patient = p.id 
+                WHERE a.specialty = ? AND MONTH(a.date) BETWEEN ? AND ? AND YEAR(a.date) = ?`,
+                [specialty.id, 4, 6, year]
+            )
+            await rowsAPR_JUN.map((result) =>{
+                const age = year - new Date(result.birthdate).getFullYear()
+                APR_JUN.man += (result.gender === 0) ? 1 : 0
+                APR_JUN.woman += (result.gender !== 0) ? 1 : 0
+                APR_JUN.children += (age < 18) ? 1 : 0
+                APR_JUN.adults += (age >= 18 && age < 65) ? 1 : 0
+                APR_JUN.oldmans += (age >= 65) ? 1 : 0
+            })
+
+            const [rowsJUL_SEP] = await pool.query(
+                `SELECT p.id, p.birthdate, p.gender FROM medicalHistory AS mh 
+                JOIN appointment AS a ON mh.appointment = a.id
+                JOIN patient AS p ON a.patient = p.id 
+                WHERE a.specialty = ? AND MONTH(a.date) BETWEEN ? AND ? AND YEAR(a.date) = ?`,
+                [specialty.id, 7, 9, year]
+            )
+            await rowsJUL_SEP.map((result) =>{
+                const age = year - new Date(result.birthdate).getFullYear()
+                JUL_SEP.man += (result.gender === 0) ? 1 : 0
+                JUL_SEP.woman += (result.gender !== 0) ? 1 : 0
+                JUL_SEP.children += (age < 18) ? 1 : 0
+                JUL_SEP.adults += (age >= 18 && age < 65) ? 1 : 0
+                JUL_SEP.oldmans += (age >= 65) ? 1 : 0
+            })
+
+            const [rowsOCT_DEC] = await pool.query(
+                `SELECT p.id, p.birthdate, p.gender FROM medicalHistory AS mh 
+                JOIN appointment AS a ON mh.appointment = a.id
+                JOIN patient AS p ON a.patient = p.id 
+                WHERE a.specialty = ? AND MONTH(a.date) BETWEEN ? AND ? AND YEAR(a.date) = ?`,
+                [specialty.id, 10, 12, year]
+            )
+            await rowsOCT_DEC.map((result) =>{
+                const age = year - new Date(result.birthdate).getFullYear()
+                OCT_DEC.man += (result.gender === 0) ? 1 : 0
+                OCT_DEC.woman += (result.gender !== 0) ? 1 : 0
+                OCT_DEC.children += (age < 18) ? 1 : 0
+                OCT_DEC.adults += (age >= 18 && age < 65) ? 1 : 0
+                OCT_DEC.oldmans += (age >= 65) ? 1 : 0
+            })
+
+            return {JAN_MAR, APR_JUN, JUL_SEP, OCT_DEC}
         })
 
-        workbook.toFileAsync('./src/media/report.xlsx')
+        specialtiesResults.map(async (result, index) =>{
+            const res = await result
+            specialtiesRows[index]['name']
+
+            sheet.cell(`A${index + 3}`).value(specialtiesRows[index]['name'])
+            sheet.cell(`B${index + 3}`).value(res['JAN_MAR']['man'])
+            sheet.cell(`C${index + 3}`).value(res['JAN_MAR']['woman'])
+            sheet.cell(`D${index + 3}`).value(res['JAN_MAR']['children'])
+            sheet.cell(`E${index + 3}`).value(res['JAN_MAR']['adults'])
+            sheet.cell(`F${index + 3}`).value(res['JAN_MAR']['oldmans'])
+
+            sheet.cell(`G${index + 3}`).value(res['APR_JUN']['man'])
+            sheet.cell(`H${index + 3}`).value(res['APR_JUN']['woman'])
+            sheet.cell(`I${index + 3}`).value(res['APR_JUN']['children'])
+            sheet.cell(`J${index + 3}`).value(res['APR_JUN']['adults'])
+            sheet.cell(`K${index + 3}`).value(res['APR_JUN']['oldmans'])
+
+            sheet.cell(`L${index + 3}`).value(res['JUL_SEP']['man'])
+            sheet.cell(`M${index + 3}`).value(res['JUL_SEP']['woman'])
+            sheet.cell(`N${index + 3}`).value(res['JUL_SEP']['children'])
+            sheet.cell(`O${index + 3}`).value(res['JUL_SEP']['adults'])
+            sheet.cell(`P${index + 3}`).value(res['JUL_SEP']['oldmans'])
+
+            sheet.cell(`Q${index + 3}`).value(res['OCT_DEC']['man'])
+            sheet.cell(`R${index + 3}`).value(res['OCT_DEC']['woman'])
+            sheet.cell(`S${index + 3}`).value(res['OCT_DEC']['children'])
+            sheet.cell(`T${index + 3}`).value(res['OCT_DEC']['adults'])
+            sheet.cell(`U${index + 3}`).value(res['OCT_DEC']['oldmans'])
+
+            sheet.cell(`V${index + 3}`).value(res['JAN_MAR']['man'] + res['APR_JUN']['man'] + res['JUL_SEP']['man'] + res['OCT_DEC']['man'])
+            sheet.cell(`W${index + 3}`).value(res['JAN_MAR']['woman'] + res['APR_JUN']['woman'] + res['JUL_SEP']['woman'] + res['OCT_DEC']['woman'])
+            sheet.cell(`X${index + 3}`).value(res['JAN_MAR']['children'] + res['APR_JUN']['children'] + res['JUL_SEP']['children'] + res['OCT_DEC']['children'])
+            sheet.cell(`Y${index + 3}`).value(res['JAN_MAR']['adults'] + res['APR_JUN']['adults'] + res['JUL_SEP']['adults'] + res['OCT_DEC']['adults'])
+            sheet.cell(`Z${index + 3}`).value(res['JAN_MAR']['oldmans'] + res['APR_JUN']['oldmans'] + res['JUL_SEP']['oldmans'] + res['OCT_DEC']['oldmans'])
+
+            workbook.toFileAsync('./src/media/report.xlsx')
+        })
+
+        
 
         res.sendStatus(204)
     }
