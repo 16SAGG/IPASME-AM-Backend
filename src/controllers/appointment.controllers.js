@@ -15,7 +15,24 @@ export const getAppointments= async (req, res) =>{
 
 export const getAppointmentsWithDoctorAndPatient = async (req, res) =>{
     try{
-        const [rows] = await pool.query('SELECT a.id, a.date, a.specialty, a.turn, u.ci AS doctor_id, u.name AS doctor_name, u.lastName AS doctor_last, p.ci AS patient_id, p.name AS patient_name, p.lastName AS patient_last FROM appointment AS a JOIN patient AS p ON a.patient = p.id JOIN user AS u ON a.doctor = u.id')
+        const [rows] = await pool.query(`
+            SELECT 
+                a.id, 
+                a.date, 
+                a.specialty,
+                s.name AS specialty_name,
+                a.turn, 
+                u.ci AS doctor_id, 
+                u.name AS doctor_name, 
+                u.lastName AS doctor_last, 
+                p.ci AS patient_id, 
+                p.name AS patient_name, 
+                p.lastName AS patient_last 
+            FROM appointment AS a 
+            JOIN patient AS p ON a.patient = p.id 
+            JOIN user AS u ON a.doctor = u.id 
+            JOIN specialty AS s ON a.specialty = s.id
+            ORDER BY id DESC`)
     
         res.json(rows)
     }
@@ -72,17 +89,18 @@ export const getAppointmentsByDoctor = async (req, res) =>{
         const dateFormat = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`
 
         const [appointmentRows] = await pool.query(`
-        SELECT a.id, a.date, a.specialty, a.turn, u.ci AS doctor_id, u.name AS doctor_name, u.lastName AS doctor_last, p.ci AS patient_id, p.name AS patient_name, p.lastName AS patient_last 
+        SELECT a.id, a.date, s.name AS specialty_name, a.specialty, a.turn, u.ci AS doctor_id, u.name AS doctor_name, u.lastName AS doctor_last, p.ci AS patient_id, p.name AS patient_name, p.lastName AS patient_last 
         FROM appointment AS a 
         JOIN patient AS p ON a.patient = p.id 
         JOIN user AS u ON a.doctor = u.id
+        JOIN specialty AS s On s.id = a.specialty
         WHERE a.doctor = ?
         AND NOT EXISTS (
             SELECT *
             FROM medicalHistory AS mh
             WHERE mh.appointment = a.id
         )
-        AND a.date >= ?
+        AND a.date = ?
         ORDER BY a.date ASC
         `, 
         [doctor_id, dateFormat])
