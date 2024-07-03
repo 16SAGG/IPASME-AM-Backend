@@ -46,7 +46,24 @@ export const getAppointmentsWithDoctorAndPatient = async (req, res) =>{
 export const getAppointmentsWithDoctorAndPatientByID = async (req, res) =>{
     try{
         const {id} = req.params
-        const [rows] = await pool.query('SELECT a.id, a.date, a.specialty, a.turn, u.ci AS doctor_id, u.name AS doctor_name, u.lastName AS doctor_last, p.ci AS patient_id, p.name AS patient_name, p.lastName AS patient_last FROM appointment AS a JOIN patient AS p ON a.patient = p.id JOIN user AS u ON a.doctor = u.id WHERE a.id = ?',
+        const [rows] = await pool.query(`
+            SELECT 
+                a.id, 
+                a.date, 
+                s.name AS specialty,
+                t.name AS turn,
+                u.ci AS doctor_id, 
+                u.name AS doctor_name, 
+                u.lastName AS doctor_last, 
+                p.ci AS patient_id, 
+                p.name AS patient_name, 
+                p.lastName AS patient_last 
+            FROM appointment AS a 
+            JOIN specialty AS s ON a.specialty = s.id
+            JOIN turn AS t ON a.turn = t.id
+            JOIN patient AS p ON a.patient = p.id 
+            JOIN user AS u ON a.doctor = u.id 
+            WHERE a.id = ?`,
         [id])
     
         res.json(rows[0])

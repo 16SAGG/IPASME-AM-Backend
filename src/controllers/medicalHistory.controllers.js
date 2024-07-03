@@ -46,18 +46,26 @@ export const getMedicalHistoriesByPatient = async (req, res) =>{
         })
 
         const [medicalHistoryRows] = await pool.query(
-            `SELECT a.date, mh.description, u.name AS doctor_name, u.lastName, u.ci, s.name AS specialty_name, t.name AS turn FROM medicalHistory AS mh 
+            `SELECT 
+                a.date, 
+                mh.description, 
+                u.name AS doctor_name, 
+                u.lastName, u.ci, 
+                s.name AS specialty_name, 
+                t.name AS turn 
+            FROM medicalHistory AS mh 
             JOIN appointment AS a ON mh.appointment = a.id 
             JOIN user AS u ON a.doctor = u.id
             JOIN specialty AS s ON a.specialty = s.id
             JOIN turn AS t ON a.turn = t.id
-            WHERE patient = ?
-            ORDER BY id DESC`
+            WHERE a.patient = ?
+            ORDER BY mh.id DESC`
             , [patient_id])
 
         res.json(medicalHistoryRows)
     }
-    catch {
+    catch (error) {
+        console.log(error)
         return res.status(500).json({
             message : 'Something Goes Wrong'
         })
